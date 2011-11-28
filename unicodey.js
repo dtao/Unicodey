@@ -1,6 +1,8 @@
 $(document).ready(function() {
   var $input = $('#input'),
-      $output = $('#output'),
+      $outputLabel = $('p.output-label'),
+      $charRow = $('tr.char-row'),
+      $codeRow = $('tr.code-row'),
       iterator;
   
   function eachCharAsync(string, func) {
@@ -28,18 +30,30 @@ $(document).ready(function() {
   }
 
   function displayUnicode(char, charCode) {
-    var $block = $('<div>').addClass('block'),
-        $charBox = $('<div>').addClass('char-box').text(char).appendTo($block),
-        $codeBox = $('<div>').addClass('code-box').text(charCode).appendTo($block);
-    
-    $block.appendTo($output);
+    $('<td>').text(char).appendTo($charRow),
+    $('<td>').text(charCode).appendTo($codeRow);
   }
-  
-  $input.keyup(function() {
+
+  function reset() {
     if (iterator) {
       iterator.stop();
     }
-    $output.empty();
-    iterator = eachCharAsync($input.val(), displayUnicode);
+
+    $outputLabel.hide();
+    $charRow.empty();
+    $codeRow.empty();
+  }
+  
+  $input.keyup(function() {
+    var value = $input.val();
+
+    reset();
+
+    if (value !== '') {
+      $outputLabel.show();
+      $('<th>').text('Char').appendTo($charRow);
+      $('<th>').text('Code').appendTo($codeRow);
+      iterator = eachCharAsync(value, displayUnicode);
+    }
   });
 });

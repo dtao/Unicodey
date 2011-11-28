@@ -9,16 +9,20 @@
   </head>
 
   <body>
-    <table class="content">
+    <table class="content" align="center">
       <tr>
         <td valign="middle">
           <div class="input-container">
             <label for="input">Enter character(s)</label><br />
             <input id="input" type="text" /><br />
           </div>
+
           <div class="output-container">
-            <label for="output">Unicode values:</label><br />
-            <div id="output" />
+            <p class="output-label" style="display: none;">Unicode values:</p>
+            <table class="output">
+              <tr class="char-row"></tr>
+              <tr class="code-row"></tr>
+            </table>
           </div>
         </td>
       </tr>

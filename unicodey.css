@@ -1,3 +1,7 @@
+* {
+  font-family: 'georgia', 'bitstream vera serif', serif;
+}
+
 html {
   height: 100%;
 }
@@ -15,28 +19,36 @@ table.content tr td {
   text-align: center;
 }
 
-input {
+.input-container {
+  font-size: 32pt;
+}
+
+.input-container input {
+  font-size: 32pt;
   text-align: center;
 }
 
 .output-container {
-  margin-top: 12px;
-  text-align: center;
-  width: auto;
+  font-size: 14pt;
 }
 
-.block {
-  background: yellow;
-  border: solid black;
-  float: left;
-  margin-left: 12px;
+table.output {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table.output tr th, table.output tr td {
   padding: 8pt;
 }
 
-.char-box {
-  font-size: 16pt;
+table.output tr th {
+  font-weight: bold;
 }
 
-.code-box {
-  font-size: 16pt;
+table.output tr.char-row td {
+  background: #80ff80;
+}
+
+table.output tr.code-row td {
+  background: #ffff80;
 }
