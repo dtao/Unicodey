@@ -1,3 +1,12 @@
-require "#{File.dirname(__FILE__)}/unicodey"
+use Rack::Static, :root => 'public'
 
-run Sinatra::Application
+run lambda { |env|
+  [
+    200, 
+    {
+      'Content-Type'  => 'text/html', 
+      'Cache-Control' => 'public, max-age=86400' 
+    },
+    File.open('public/unicodey.html', File::RDONLY)
+  ]
+}
