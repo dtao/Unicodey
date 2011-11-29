@@ -1,9 +1,12 @@
 $(document).ready(function() {
   var $input = $('#input'),
       $outputLabel = $('p.output-label'),
+      $loadingImage = $('img.loading-image'),
       $charRow = $('tr.char-row'),
       $codeRow = $('tr.code-row'),
-      iterator;
+      waitingId,
+      iterator,
+      lastValue;
   
   function eachCharAsync(string, func) {
     var upper = string.length - 1,
@@ -17,7 +20,7 @@ $(document).ready(function() {
         } else {
           timeoutId = null;
         }
-      }, 1);
+      }, 4);
     }(0));
 
     return {
@@ -47,13 +50,29 @@ $(document).ready(function() {
   $input.keyup(function() {
     var value = $input.val();
 
+    if (value === lastValue) {
+      return;
+    }
+
     reset();
 
     if (value !== '') {
-      $outputLabel.show();
-      $('<th>').text('Char').appendTo($charRow);
-      $('<th>').text('Code').appendTo($codeRow);
-      iterator = eachCharAsync(value, displayUnicode);
+      $loadingImage.show();
+
+      if (waitingId) {
+        clearTimeout(waitingId);
+      }
+
+      waitingId = setTimeout(function() {
+        $loadingImage.hide();
+        $outputLabel.show();
+        $('<th>').text('Char').appendTo($charRow);
+        $('<th>').text('Code').appendTo($codeRow);
+        iterator = eachCharAsync(value, displayUnicode);
+        waitingId = null;
+      }, 500);
     }
+
+    lastValue = value;
   });
 });

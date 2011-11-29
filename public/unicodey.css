@@ -1,5 +1,5 @@
 * {
-  font-family: 'georgia', 'bitstream vera serif', serif;
+  font-family: 'Georgia', 'Bitstream Vera Serif', serif;
 }
 
 html {
@@ -21,6 +21,7 @@ table.content tr td {
 
 .input-container {
   font-size: 32pt;
+  margin-bottom: 16pt;
 }
 
 .input-container input {
