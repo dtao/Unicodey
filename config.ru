@@ -1,4 +1,6 @@
-use Rack::Static, :root => 'public'
+use Rack::Static,
+  :urls => ['/stylesheets', '/javascripts'],
+  :root => 'public'
 
 run lambda { |env|
   [
