@@ -5,6 +5,7 @@
 
   <link rel="stylesheet" href="unicodey.css" />
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="unicodeyBox.js"></script>
   <script type="text/javascript" src="unicodey.js"></script>
 </head>
 
@@ -12,22 +13,43 @@
   <table class="content" align="center">
     <tr>
       <td valign="middle">
-        <div class="input-container">
-          <label for="input"> Enter character(s)</label><br />
-          <input id="input" type="text" />
+        <div id="main-wrapper">
+          <div class="input-container">
+            <label for="unicodey-input">Enter character(s)</label><br />
+            <input class="unicodey-input" name="unicodey-input" type="text" />
+          </div>
+
+          <div class="output-container">
+            <img class="loading-image" src="loading.gif" style="display: none;" />
+            <p class="output-label" style="display: none;">Unicode value(s):</p>
+
+            <table class="output">
+              <tr class="char-row"></tr>
+              <tr class="code-row"></tr>
+            </table>
+          </div>
         </div>
 
-        <div class="output-container">
-          <img class="loading-image" src="loading.gif" style="display: none;" />
-          <p class="output-label" style="display: none;">Unicode value(s):</p>
+        <div id="comparison-wrapper" style="display: none;">
+          <hr />
 
-          <table class="output">
-            <tr class="char-row"></tr>
-            <tr class="code-row"></tr>
-          </table>
+          <div class="input-container">
+            <label for="unicodey-input">Compare with</label><br />
+            <input class="unicodey-input" name="unicodey-input" type="text" />
+          </div>
 
-          <a class="add-link" href="javascript: void(0);">Compare</a>
+          <div class="output-container">
+            <img class="loading-image" src="loading.gif" style="display: none;" />
+            <p class="output-label" style="display: none;">Unicode value(s):</p>
+
+            <table class="output">
+              <tr class="char-row"></tr>
+              <tr class="code-row"></tr>
+            </table>
+          </div>
         </div>
+
+        <a class="add-link" href="javascript: void(0);">compare</a>
       </td>
     </tr>
   </table>

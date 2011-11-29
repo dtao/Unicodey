@@ -10,6 +10,16 @@ body {
   height: 100%;
 }
 
+a {
+  color: #000080;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #800000;
+  text-decoration: underline;
+}
+
 table.content {
   height: 100%;
   width: 100%;
@@ -20,17 +30,21 @@ table.content tr td {
 }
 
 .input-container {
-  font-size: 32pt;
   margin-bottom: 16pt;
 }
 
-.input-container input {
+label {
+  font-size: 24pt;
+}
+
+input {
   font-size: 32pt;
   text-align: center;
 }
 
 .output-container {
   font-size: 14pt;
+  margin-bottom: 16pt;
 }
 
 table.output {
@@ -52,4 +66,12 @@ table.output tr.char-row td {
 
 table.output tr.code-row td {
   background: #ffff80;
+}
+
+table.output tr td.mismatch {
+  background: #ff8080;
+}
+
+table.output tr td.gray {
+  background: #808080;
 }

@@ -1,78 +1,90 @@
 $(document).ready(function() {
-  var $input = $('#input'),
-      $outputLabel = $('p.output-label'),
-      $loadingImage = $('img.loading-image'),
-      $charRow = $('tr.char-row'),
-      $codeRow = $('tr.code-row'),
-      waitingId,
-      iterator,
-      lastValue;
+  var mainBox = new UnicodeyBox($('#main-wrapper')),
+      comparisonBox = new UnicodeyBox($('#comparison-wrapper')),
+      $addLink = $('a.add-link');
   
-  function eachCharAsync(string, func) {
-    var upper = string.length - 1,
-        timeoutId;
-    
-    (function iterate(index) {
-      timeoutId = setTimeout(function() {
-        func(string.charAt(index), string.charCodeAt(index));
-        if (index < upper) {
-          iterate(index + 1);
-        } else {
-          timeoutId = null;
-        }
-      }, 4);
-    }(0));
-
-    return {
-      stop: function() {
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-        }
-      }
-    };
-  }
-
-  function displayUnicode(char, charCode) {
-    $('<td>').text(char).appendTo($charRow),
-    $('<td>').text(charCode).appendTo($codeRow);
-  }
-
-  function reset() {
-    if (iterator) {
-      iterator.stop();
+  function compareCodes(index) {
+    if (mainBox.codeAt(index) !== comparisonBox.codeAt(index)) {
+      mainBox.highlightError(index);
+      comparisonBox.highlightError(index);
+    } else {
+      mainBox.clearStyles(index);
+      comparisonBox.clearStyles(index);
     }
-
-    $outputLabel.hide();
-    $charRow.empty();
-    $codeRow.empty();
   }
-  
-  $input.keyup(function() {
-    var value = $input.val();
 
-    if (value === lastValue) {
+  function compareCodesUpTo(index) {
+    for (var i = 0; i < index; ++i) {
+      compareCodes(i);
+    }
+  }
+
+  function grayOutFrom(index, box) {
+    for (var i = index; i < box.charCount(); ++i) {
+      box.grayOut(i);
+    }
+  }
+
+  function refreshStyles() {
+    var mainCharCount = mainBox.charCount(),
+        comparisonCharCount = comparisonBox.charCount(),
+        lesserCharCount = Math.min(mainCharCount, comparisonCharCount);
+    
+    compareCodesUpTo(lesserCharCount);
+    grayOutFrom(lesserCharCount, (lesserCharCount < mainCharCount) ? mainBox : comparisonBox);
+  }
+
+  $addLink.click(function() {
+    if (comparisonBox.isVisible()) {
+      comparisonBox.hide();
+      mainBox.clearStyles();
+      $addLink.text('compare');
+    } else {
+      comparisonBox.show();
+      refreshStyles();
+      $addLink.text('hide');
+    }
+  });
+
+  mainBox.onCharDecoded(function(index) {
+    if (!comparisonBox.isVisible()) {
       return;
     }
 
-    reset();
-
-    if (value !== '') {
-      $loadingImage.show();
-
-      if (waitingId) {
-        clearTimeout(waitingId);
-      }
-
-      waitingId = setTimeout(function() {
-        $loadingImage.hide();
-        $outputLabel.show();
-        $('<th>').text('Char').appendTo($charRow);
-        $('<th>').text('Code').appendTo($codeRow);
-        iterator = eachCharAsync(value, displayUnicode);
-        waitingId = null;
-      }, 500);
+    if (index >= comparisonBox.charCount()) {
+      mainBox.grayOut(index);
+      return;
     }
 
-    lastValue = value;
+    compareCodes(index);
+  });
+
+  mainBox.onCleared(function() {
+    grayOutFrom(0, comparisonBox);
+  });
+
+  mainBox.onFinished(function() {
+    if (comparisonBox.charCount() > mainBox.charCount()) {
+      grayOutFrom(mainBox.charCount(), comparisonBox);
+    }
+  });
+
+  comparisonBox.onCharDecoded(function(index) {
+    if (index >= mainBox.charCount()) {
+      comparisonBox.grayOut(index);
+      return;
+    }
+
+    compareCodes(index);
+  });
+
+  comparisonBox.onCleared(function() {
+    grayOutFrom(0, mainBox);
+  });
+
+  comparisonBox.onFinished(function() {
+    if (mainBox.charCount() > comparisonBox.charCount()) {
+      grayOutFrom(comparisonBox.charCount(), mainBox);
+    }
   });
 });
