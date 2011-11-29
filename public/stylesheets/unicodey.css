@@ -1,13 +1,12 @@
-* {
-  font-family: 'Georgia', 'Bitstream Vera Serif', serif;
-}
-
 html {
   height: 100%;
 }
 
 body {
+  font-family: 'Georgia', 'Bitstream Vera Serif', serif;
   height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 a {
@@ -73,5 +72,5 @@ table.output tr td.mismatch {
 }
 
 table.output tr td.gray {
-  background: #808080;
+  background: #aaaaaa;
 }
